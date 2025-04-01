@@ -3,8 +3,8 @@ description = ask("What is the description of your app?")
 
 # Add routes if they don't exist
 routes_content = <<-RUBY
-    get "webmanifest"    => "pwa#manifest"
-    get "service-worker" => "pwa#service_worker"
+  get "webmanifest"    => "pwa#manifest"
+  get "service-worker" => "pwa#service_worker"
 RUBY
 
 inject_into_file 'config/routes.rb', before: /end$/ do
@@ -35,34 +35,34 @@ FileUtils.mkdir_p('app/views/pwa') unless Dir.exist?('app/views/pwa')
 # Create manifest file if it doesn't exist
 unless File.exist?('app/views/pwa/manifest.json.erb')
   create_file 'app/views/pwa/manifest.json.erb' do
-    <<-ERB
+    <<~ERB
+{
+  "name": "#{name}",
+  "icons": [
     {
-      "name": "#{name}",
-      "icons": [
-        {
-          "src": "<%= image_url("app-icon-192.png") %>",
-          "type": "image/png",
-          "sizes": "192x192"
-        },
-        {
-          "src": "<%= image_url("app-icon-512.png") %>",
-          "type": "image/png",
-          "sizes": "512x512"
-        },
-        {
-          "src": "<%= image_url("app-icon-512.png") %>",
-          "type": "image/png",
-          "sizes": "512x512",
-          "purpose": "maskable"
-        }
-      ],
-      "start_url": "/",
-      "display": "standalone",
-      "scope": "/",
-      "description": "#{description}",
-      "theme_color": "#ffffff",
-      "background_color": "#ffffff"
+      "src": "<%= image_url("app-icon-192.png") %>",
+      "type": "image/png", 
+      "sizes": "192x192"
+    },
+    {
+      "src": "<%= image_url("app-icon-512.png") %>",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "<%= image_url("app-icon-512.png") %>",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "scope": "/",
+  "description": "#{description}",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}
     ERB
   end
 end
