@@ -1,3 +1,6 @@
+name = ask("What is the name of your app?")
+description = ask("What is the description of your app?")
+
 inject_into_file 'config/routes.rb', before: /end$/ do
   <<-RUBY
     get "webmanifest"    => "pwa#manifest"
@@ -26,7 +29,7 @@ FileUtils.mkdir_p('app/views/pwa')
 create_file 'app/views/pwa/manifest.json.erb' do
   <<-ERB
     {
-      "name": "Campfire",
+      "name": "#{name}",
       "icons": [
         {
           "src": "<%= image_url("app-icon-192.png") %>",
@@ -48,7 +51,7 @@ create_file 'app/views/pwa/manifest.json.erb' do
       "start_url": "/",
       "display": "standalone",
       "scope": "/",
-      "description": "A chat app from the makers of Basecamp and HEY.",
+      "description": "#{description}",
       "theme_color": "#ffffff",
       "background_color": "#ffffff"
     }
