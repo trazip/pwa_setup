@@ -14,17 +14,17 @@ end
 # Create controller if it doesn't exist
 unless File.exist?('app/controllers/pwa_controller.rb')
   create_file 'app/controllers/pwa_controller.rb' do
-    <<-RUBY
-    class PwaController < ApplicationController
-      skip_before_action :authenticate_user!
-      skip_forgery_protection
+    <<~RUBY
+class PwaController < ApplicationController
+  skip_before_action :authenticate_user!
+  skip_forgery_protection
 
-      def service_worker
-      end
+  def service_worker
+  end
 
-      def manifest
-      end
-    end
+  def manifest
+  end
+end
     RUBY
   end
 end
@@ -82,6 +82,10 @@ end
 unless File.exist?('app/assets/images/app-icon-512.png')
   run "curl -L https://raw.githubusercontent.com/trazip/pwa_setup/master/images/app-icon-512.png -o app/assets/images/app-icon-512.png"
 end
+
+# Remove existing viewport meta tag if it exists
+gsub_file 'app/views/layouts/application.html.erb', /<meta name="viewport".*?>(\r?\n|\r)?/, ''
+
 
 # Add meta tags if they don't exist
 meta_content = <<-HTML
