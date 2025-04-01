@@ -65,4 +65,17 @@ end
 run "curl -L https://raw.githubusercontent.com/trazip/pwa_setup/master/images/app-icon-192.png -o app/assets/images/app-icon-192.png"
 run "curl -L https://raw.githubusercontent.com/trazip/pwa_setup/master/images/app-icon-512.png -o app/assets/images/app-icon-512.png"
 
+
+inject_into_file 'app/views/layouts/application.html.erb', before: '<%= csrf_meta_tags %>' do
+  <<-HTML
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= tag.link rel: "manifest", href: webmanifest_path(format: :json) %>
+    <%= tag.link rel: "icon", href: image_url("app-icon-512.png"), type: "image/png" %>
+    <%= tag.link rel: "apple-touch-icon", href: image_url("app-icon-512.png") %>
+
+  HTML
+end
+
+
 say "PWA setup completed successfully!", :green
